@@ -1,11 +1,9 @@
+// babel-node  .\dl.js --presets es2017
 // https://stackoverflow.com/questions/40593875/using-filesystem-in-node-js-with-async-await
 
-const jQuery = require('jquery');
 const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
-const parseString = require('xml2js').parseString;
-
 const readFile = util.promisify(fs.readFile);
 
 
@@ -29,22 +27,22 @@ let getSourceFromUrl= function(url, file) {
                     return console.log(err);
                 }
                 console.log("The file was saved!");
-            }); 
+            });
         })
 }
 
 let getHrefs = function(cheerioObject){
     let href = [];
-    cheerioObject('.list .item .desc h3 a').each(function(i, elm) {  
-        // console.log(  $(this).attr("href") );            
+    cheerioObject('.list .item .desc h3 a').each(function(i, elm) {
+        // console.log(  $(this).attr("href") );
         href.push(cheerioObject(this).attr("href"));
-    });    
+    });
     return href.filter(item => !item.includes("centrum-sluzeb"));
 }
 
 let getSize = function(cheerioObject){
     let size = []
-    cheerioObject('.list .item .desc .surface').each(function(i, elm) {  
+    cheerioObject('.list .item .desc .surface').each(function(i, elm) {
         size.push(cheerioObject(this).text() );
     });
     return size.filter(item => !item.includes("Smlouvy,"));
@@ -52,11 +50,11 @@ let getSize = function(cheerioObject){
 
 let getPrice = function(cheerioObject){
     let price = [];
-    cheerioObject('.list .item .desc .price').each(function(i, elm) {  
+    cheerioObject('.list .item .desc .price').each(function(i, elm) {
         price.push(cheerioObject(this).text() );
-    });    
+    });
     return price;
-}  
+}
 
 async function getStuff() {
     try{
@@ -66,20 +64,19 @@ async function getStuff() {
             xmlMode: true
         });
         let href = await getHrefs($);
-        let size = await getSize($); 
+        let size = await getSize($);
         let rooms = await size.map(x => x.split(',')[0].split(" ")[2]);
-        let surface = await size.map(x => x.split(',')[1]);     
         let price = await getPrice($);
 
         return size.map(function (a,b) {
                 return {
-                "size": a, 
-                "href": href[b], 
+                "size": a,
+                "href": href[b],
                 "price": price[b],
                 "surface": surface[b],
                 "rooms": rooms[b]
                 }})
-    } 
+    }
     catch(err){
       console.log(err);
   }

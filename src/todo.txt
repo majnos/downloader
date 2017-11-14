@@ -1,0 +1,5 @@
+1) click next button until there is no next button 
+2) get all the offers in the area
+3) show them
+4) get all the offers into the database and verify periodically new offers
+5) create long term stats from the area
