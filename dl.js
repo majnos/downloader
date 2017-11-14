@@ -8,15 +8,6 @@ const {Builder, By, Key, until} = require('selenium-webdriver');
 const baseUrl = "www.bezrealitky.cz";
 
 
-/*
-let defaultXmlParser = function(line) {
-    return parseString(line, function (err, result) {
-            result
-        });
-};
-*/
-
-
 let getSourceFromUrl= function(url, file) {
     let driver = new Builder()
         .forBrowser('chrome')
@@ -36,13 +27,29 @@ let getSourceFromUrl= function(url, file) {
         })
 }
 
-let myParser = function(data) {
-    console.log( data );
-    let $ = cheerio.load(data, {
-        normalizeWhitespace: true,
-        xmlMode: true
+let getHrefs = function(cheerioObject){
+    let href = [];
+    cheerioObject('.list .item .desc h3 a').each(function(i, elm) {  
+        // console.log(  $(this).attr("href") );            
+        href.push(cheerioObject(this).attr("href"));
+    });    
+    return href.filter(item => !item.includes("centrum-sluzeb"));
+}
+
+let getSize = function(cheerioObject){
+    let size = []
+    cheerioObject('.list .item .desc .surface').each(function(i, elm) {  
+        size.push(cheerioObject(this).html() );
     });
-    return $('.desc').html();
+    return size.filter(item => !item.includes("Smlouvy,"));
+}
+
+let getPrice = function(cheerioObject){
+    let price = [];
+    cheerioObject('.list .item .desc .price').each(function(i, elm) {  
+        price.push(cheerioObject(this).html() );
+    });    
+    return price;
 }
 
 let getItemsFromRawData = function(file) {
@@ -55,27 +62,24 @@ let getItemsFromRawData = function(file) {
             normalizeWhitespace: true,
             xmlMode: true
         });
-        $('.list .item .desc').each(function(i, elm) {  
-            console.log( $(this).html() );
-        });
+        
+        let href = getHrefs($);
+        let size = getSize($); 
+        let surface = size.forEach(x => x.split(/,(.+)/)[1]);
+        let rooms = size.forEach(x => x.split(/,(.+)/)[1]);
+        let price = getPrice($);        
 
-        let names = $('.list .item .desc h3 a').each(function(i, elm) {  
-            console.log(  $(this).filter("Nové centrum*").html() );
-        });
-                
-        let items = $('.list .item .desc .surface').each(function(i, elm) {  
-            console.log(  $(this).filter("Smlouvy*").html() );
-        });
+        let output = size.map( function(a,b){
+            return {"size": a, 
+                    "href": href[b], 
+                    "price": price[b],
+                    "surface": surface[b],
+                    "rooms": rooms[b]
+                }});
 
-        let prices = $('.list .item .desc .price').each(function(i, elm) {  
-            console.log( $(this).html() );
-        });
-    });
+        console.log(output);
+    })
 }
 
 // getSourceFromUrl(testUrl, 'temp.html');
-getItemsFromRawData('temp.html');
-//const line = `<div class="wrapper"> <div class="image"> <a href="/nemovitosti-byty-domy/495202-nabidka-prodej-bytu-na-sadce-praha" data-ng-href="/nemovitosti-byty-domy/495202-nabidka-prodej-bytu-na-sadce-praha" target="_blank"> <!-- ngIf: result.reserved --> <img data-ng-src="https://www.bezrealitky.cz/media/cache/record_thumb/data/record/images/495k/495202/1508762704-bgvwp-img00000004bpct-lb.jpg" alt="Prodej bytu 2+kk, 42 m&#xB2; bez realitky, Na S&#xE1;dce, Praha - Chodov, hlavn&#xED; foto" src="https://www.bezrealitky.cz/media/cache/record_thumb/data/record/images/495k/495202/1508762704-bgvwp-img00000004bpct-lb.jpg"/> </a> <!-- ngIf: result.favorite --> </div> <div class="text"> <div class="desc"> <h3> <a href="/nemovitosti-byty-domy/495202-nabidka-prodej-bytu-na-sadce-praha" data-ng-href="/nemovitosti-byty-domy/495202-nabidka-prodej-bytu-na-sadce-praha" target="_blank" class="ng-binding">Na S&#xE1;dce, Praha - Chodov</a> </h3> <div class="surface ng-binding">Prodej bytu 2+kk, 42 m&#xB2;</div> <div class="price ng-binding">2.800.000 K&#x10D;</div> </div> <div class="links"> <div> <span class="label verified ng-hide" data-ng-show="result.userVerified">ov&#x11B;&#x159;en&#xFD; u&#x17E;ivatel</span> <span class="label developer ng-hide" data-ng-show="result.ideveloper">developer</span> </div> <!-- ngIf: !result.favorite --><a href="" class="favorite ng-scope" data-ng-if="!result.favorite" data-ng-click="addToFavorite(result)" title="Ulo&#x17E;&#xED; v&#xE1;&#x161; inzer&#xE1;t mezi obl&#xED;ben&#xE9;, tak&#x17E;e se k n&#x11B;mu budete moci vracet.">Do obl&#xED;ben&#xFD;ch</a><!-- end ngIf: !result.favorite --> <!-- ngIf: result.favorite --> <!-- ngIf: !result.ideveloper && result.userWebId == 0 --> </div> <a class="btn-detail" href="/nemovitosti-byty-domy/495202-nabidka-prodej-bytu-na-sadce-praha" title="Klikn&#x11B;te pro bli&#x17E;&#x161;&#xED; informace k inzer&#xE1;tu." target="_blank">Detail</a> </div> <div class="clr"/> </div>`;
-
-//const neco = myParser(line);
-//console.log('done');
+let abc = getItemsFromRawData('temp.html');
