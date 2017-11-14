@@ -27,31 +27,6 @@ let getSourceFromUrl= function(url, file) {
         })
 }
 
-let getHrefs = function(cheerioObject){
-    let href = [];
-    cheerioObject('.list .item .desc h3 a').each(function(i, elm) {  
-        // console.log(  $(this).attr("href") );            
-        href.push(cheerioObject(this).attr("href"));
-    });    
-    return href.filter(item => !item.includes("centrum-sluzeb"));
-}
-
-let getSize = function(cheerioObject){
-    let size = []
-    cheerioObject('.list .item .desc .surface').each(function(i, elm) {  
-        size.push(cheerioObject(this).html() );
-    });
-    return size.filter(item => !item.includes("Smlouvy,"));
-}
-
-let getPrice = function(cheerioObject){
-    let price = [];
-    cheerioObject('.list .item .desc .price').each(function(i, elm) {  
-        price.push(cheerioObject(this).html() );
-    });    
-    return price;
-}
-
 let getItemsFromRawData = function(file) {
     const data = fs.readFile(file, 'utf8', function read(err, data) {
         if (err) {
@@ -63,13 +38,44 @@ let getItemsFromRawData = function(file) {
             xmlMode: true
         });
         
+        let getHrefs = function(cheerioObject){
+            let href = [];
+            cheerioObject('.list .item .desc h3 a').each(function(i, elm) {  
+                // console.log(  $(this).attr("href") );            
+                href.push(cheerioObject(this).attr("href"));
+            });    
+            return href.filter(item => !item.includes("centrum-sluzeb"));
+        }
+        
+        let getSize = function(cheerioObject){
+            let size = []
+            cheerioObject('.list .item .desc .surface').each(function(i, elm) {  
+                size.push(cheerioObject(this).html() );
+            });
+            return size.filter(item => !item.includes("Smlouvy,"));
+        }
+        
+        let getPrice = function(cheerioObject){
+            let price = [];
+            cheerioObject('.list .item .desc .price').each(function(i, elm) {  
+                price.push(cheerioObject(this).html() );
+            });    
+            return price;
+        }
+
         let href = getHrefs($);
         let size = getSize($); 
-        let surface = size.forEach(x => x.split(/,(.+)/)[1]);
-        let rooms = size.forEach(x => x.split(/,(.+)/)[1]);
+        let rooms = [];
+        size.forEach(function(x) {
+            rooms.push(x.split(',')[0].split(" ")[2]);
+        });
+        let surface = [];        
+        size.forEach(function(x) {
+            surface.push(x.split(',')[1]);
+        });        
         let price = getPrice($);        
 
-        let output = size.map( function(a,b){
+        const output = size.map( function(a,b){
             return {"size": a, 
                     "href": href[b], 
                     "price": price[b],
@@ -78,8 +84,10 @@ let getItemsFromRawData = function(file) {
                 }});
 
         console.log(output);
-    })
-}
+        return output;
+    });
+};
 
 // getSourceFromUrl(testUrl, 'temp.html');
 let abc = getItemsFromRawData('temp.html');
+console.log(abc);
