@@ -73,7 +73,6 @@ async function getStuff() {
                 "size": a,
                 "href": href[b],
                 "price": price[b],
-                "surface": surface[b],
                 "rooms": rooms[b]
                 }})
     }
@@ -82,7 +81,7 @@ async function getStuff() {
   }
 }
 
-//getSourceFromUrl(testUrl,'temp.html');
+getSourceFromUrl(testUrl,'temp.html');
 getStuff().then(data => {
     console.log(data);
 });
