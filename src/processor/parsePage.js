@@ -1,3 +1,8 @@
+const fs = require('fs');
+const util = require('util');
+const cheerio = require('cheerio');
+const readFile = util.promisify(fs.readFile);
+
 let getHrefs = function(cheerioObject){
   let href = [];
   cheerioObject('.list .item .desc h3 a').each(function(i, elm) {
