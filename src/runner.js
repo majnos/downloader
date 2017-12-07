@@ -6,12 +6,12 @@ const regions = require('./metadata/regions');
 const getPages = require('./processor/getPages.js')
 const parsePage = require('./processor/parsePage.js')
 
-let url = regions['bezrealitky-flat'][0]['url'];
+let url = regions['bezrealitky-flat'][1]['url'];
 
 (async () => {
   console.log('start vole')
   let data = await getPages.getSourceFromUrl(url);
   let details = await parsePage.getStuff(data);
-  console.log(details.length);
+  console.log(details);
   }
 )()

@@ -1,7 +1,7 @@
 {
   "bezrealitky-flat": [
     { "name": "Praha6", "url": "https://www.bezrealitky.cz/vyhledat#?order=time_order_desc&advertoffertype=nabidka-prodej&estatetype=byt&ownership=&equipped=&address=&estatetype%5B%5D=byt&priceFrom=null&priceTo=6500000&construction=&description=&surfaceFrom=70&surfaceTo=&balcony=&terrace=&map=50.069706,14.315167,50.129277,14.438592,13&disposition%5B%5D=3-kk&disposition%5B%5D=3-1&disposition%5B%5D=4-kk&disposition%5B%5D=4-1&disposition%5B%5D=5-kk" },
-    { "name": "Praha4", "url": "http://xyz" },
+    { "name": "Praha", "url": "https://www.bezrealitky.cz/vyhledat#?order=time_order_desc&advertoffertype=nabidka-prodej&ownership=&equipped=&address=Praha&map=50.03859,14.398036,50.068405,14.459233,14&priceFrom=null&priceTo=6000000&construction=&description=&surfaceFrom=&surfaceTo=&balcony=&terrace=&polygons=%5B%5D" },
     { "name": "Praha7", "url": "http://xyz" }
   ],
   "bezrealitky-house": [
