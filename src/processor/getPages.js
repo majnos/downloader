@@ -1,7 +1,7 @@
 const {Builder, By, until} = require('selenium-webdriver');
 let fs = require('fs')
 let os = require('./../utils/os')
-const TIMEOUT = 2000
+const TIMEOUT = 3000
 
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -34,7 +34,8 @@ async function getSourceFromUrl(url){
 		let driver = await new Builder().forBrowser('chrome').build();
 		await driver.get(url)
 		await clickMore(driver)	
-		let items = await driver.executeScript("return document.documentElement.outerHTML")		
+		let items = await driver.executeScript("return document.documentElement.outerHTML")	
+		await driver.quit()	
 		return items
 } catch (error) {
 		console.error(error);
@@ -42,4 +43,4 @@ async function getSourceFromUrl(url){
 	}
 }
 
-module.exports.getSourceFromUrl = getSourceFromUrl;
+module.exports.getSourceFromUrl = getSourceFromUrl

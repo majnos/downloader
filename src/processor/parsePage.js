@@ -30,21 +30,26 @@ let getPrice = function(cheerioObject){
 
 async function getStuff(data) {
   try{
+      const re  = /(\d){6}|(\d){5}/g
       let $ = await cheerio.load(data, {
           normalizeWhitespace: true,
           xmlMode: true
       });
+      let id = await getHrefs($).map(href => href.match(re) );      
       let href = await getHrefs($);
       let size = await getSize($);
       let rooms = await size.map(x => x.split(',')[0].split(" ")[2]);
       let price = await getPrice($);
 
+    //   let regexp = new RegExp('\d\d\d\d\d\d', 'g');
+      
       return size.map(function (a,b) {
               return {
+              "id": id[b][0],
               "size": a,
               "href": href[b],
               "price": price[b],
-              "rooms": rooms[b]
+              "rooms": rooms[b]        
               }})
   }
   catch(err){
