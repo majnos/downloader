@@ -5,7 +5,7 @@ const readFile = util.promisify(fs.readFile);
 const regions = require('./metadata/regions');
 const getPages = require('./processor/getPages.js')
 const parsePage = require('./processor/parsePage.js')
-const MongoClient = require('mongodb').MongoClient;
+const persistance = require('./db/persistanceLogic.js')
 
 let url = regions['bezrealitky-flat'][0]['url'];
 
@@ -15,7 +15,7 @@ let url = regions['bezrealitky-flat'][0]['url'];
   
   let data = await getPages.getSourceFromUrl(url);
   let details = await parsePage.getStuff(data);
-  
-  console.log(details);
+  await persistance.addMissing(details)  
+  // console.log(details);
   }
 )()

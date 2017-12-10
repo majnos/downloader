@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "db",
-            "program": "${workspaceFolder}/src/db/dbcontrol.js"
+            "program": "${workspaceFolder}/src/db/baseControl.js"
         },
         {
             "type": "node",
