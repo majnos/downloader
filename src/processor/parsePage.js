@@ -2,11 +2,11 @@ const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
 const readFile = util.promisify(fs.readFile);
+const dates = require('./../utils/dates.js')
 
 let getHrefs = function(cheerioObject){
   let href = [];
   cheerioObject('.list .item .desc h3 a').each(function(i, elm) {
-      // console.log(  $(this).attr("href") );
       href.push(cheerioObject(this).attr("href"));
   });
   return href.filter(item => !item.includes("centrum-sluzeb"));
@@ -40,6 +40,7 @@ async function getStuff(data) {
       let size = await getSize($);
       let rooms = await size.map(x => x.split(',')[0].split(" ")[2]);
       let price = await getPrice($);
+      let timestamp = await dates.getDate()
 
     //   let regexp = new RegExp('\d\d\d\d\d\d', 'g');
       
@@ -49,7 +50,8 @@ async function getStuff(data) {
               "size": a,
               "href": href[b],
               "price": price[b],
-              "rooms": rooms[b]        
+              "rooms": rooms[b],
+              "timestamp": timestamp
               }})
   }
   catch(err){

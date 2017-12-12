@@ -7,13 +7,12 @@ const TESTDATA =  {
                     price: '5.150.000 Kč',
                     rooms: '3+kk' 
                 }
-const COLLECTION = 'test'
 // Connection URL
 const URL = 'mongodb://localhost:27017/myproject'
 
 async function connect(url) {
     try {
-        console.log('Connectingto server' + url)
+        console.log('Connecting to server' + url)
         let db = await MongoClient.connect(url)
         console.log('Successfuly connected to the server') 
         return db
@@ -22,11 +21,11 @@ async function connect(url) {
     }
 }
 
-async function insertOne(json) {
+async function insertOne(selectSet, json) {
     try {
-        console.log('Inserting a '+json+' into the collection: '+COLLECTION+' at ' + URL)
+        console.log('Inserting a '+json+' into the collection: '+selectSet+' at ' + URL)
         const db = await connect(URL)
-        await db.collection(COLLECTION).insertOne(json);
+        await db.collection(selectSet).insertOne(json);
         await db.close()
     } catch (err) {
         await db.close()        
@@ -34,11 +33,11 @@ async function insertOne(json) {
     }
 }
 
-async function findOne(json) {
+async function findOne(selectSet, json) {
     try {
         console.log('looking for: '+ json)
         const db = await connect(URL)
-        let collection = db.collection(COLLECTION)
+        let collection = db.collection(selectSet)
         let output = await collection.find(json).next()
         await db.close()        
         console.log('returning: '+output)
@@ -49,11 +48,11 @@ async function findOne(json) {
     }
 }
 
-async function findAll(subjson) {
+async function findAll(selectSet, json) {
     try {
-        console.log('looking for this subjson: '+subjson)
+        console.log('looking for this subjson: '+json)
         const db = await connect(URL)
-        let cursor = db.collection(COLLECTION).find(subjson)
+        let cursor = db.collection(selectSet).find(json)
         let out = []
         for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
             console.log(doc);
@@ -67,7 +66,14 @@ async function findAll(subjson) {
     }
 }
 
-async function deleteOne(id) {
+async function purgeSet(selectSet){
+    const db = await connect(URL)
+    await db.collection(selectSet).remove({})
+    console.log('Collection ' + selectSet + ' purged.' )
+    await db.close()
+}
+
+async function deleteOne(selectSet, id) {
     try {
         const db = await connect(URL)
         db.orders.deleteOne( { "_id" : ObjectId(id) } );
@@ -80,14 +86,19 @@ async function deleteOne(id) {
 
 // (async () => {
 //     console.log('start pico vole pico')
-//     // await insertOne({text: 'ahojhele'})
-//     let testik = await findAll(
-//         {}
-//     )    
-//     console.log(testik)
+//     await insertOne('new', {text: 'ahojhele'})
+//     //
+//     await purgeSet('new')
+//     await findAll('new')
+
+//     // let testik = await findAll(
+//     //     {}
+//     // )    
+//     console.log('done pico')
 //     })()
 
 module.exports.insertOne = insertOne
 module.exports.findOne = findOne
 module.exports.findAll = findAll
 module.exports.deleteOne = deleteOne
+module.exports.purgeSet = purgeSet
