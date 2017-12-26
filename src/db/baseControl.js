@@ -48,7 +48,7 @@ async function findOne(selectSet, json) {
     }
 }
 
-async function findAll(selectSet, json) {
+async function findAll(selectSet='default', json) {
     try {
         console.log('looking for this subjson: '+json)
         const db = await connect(URL)

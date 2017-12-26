@@ -28,7 +28,7 @@ let getPrice = function(cheerioObject){
   return price;
 }
 
-async function getStuff(data) {
+async function getStuff(data, subset) {
   try{
       const re  = /(\d){6}|(\d){5}/g
       let $ = await cheerio.load(data, {
@@ -41,8 +41,6 @@ async function getStuff(data) {
       let rooms = await size.map(x => x.split(',')[0].split(" ")[2]);
       let price = await getPrice($);
       let timestamp = await dates.getDate()
-
-    //   let regexp = new RegExp('\d\d\d\d\d\d', 'g');
       
       return size.map(function (a,b) {
               return {
@@ -51,7 +49,8 @@ async function getStuff(data) {
               "href": href[b],
               "price": price[b],
               "rooms": rooms[b],
-              "timestamp": timestamp
+              "timestamp": timestamp,
+              "subset": subset, 
               }})
   }
   catch(err){

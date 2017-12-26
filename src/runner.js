@@ -7,11 +7,10 @@ const getPages = require('./processor/getPages.js')
 const parsePage = require('./processor/parsePage.js')
 const persistance = require('./db/persistanceLogic.js')
 const db = require('./db/baseControl.js')
+const utils = require('./utils/dates.js')
 
 
-// let url = regions['bezrealitky-flat'][0]['url'];
-
-for (item of regions['bezrealitky-flat']) {
+for (item of regions['bezrealitky']) {
   console.log(item.url + '\n')
 }
 
@@ -19,12 +18,18 @@ for (item of regions['bezrealitky-flat']) {
   console.log('start vole')
   // db.purgeSet('new')
   // db.purgeSet('default')
-  for (item of regions['bezrealitky-flat']) {
+  let subset = 'bezrealitky'
+  for (item of regions[subset]) {
     let data = await getPages.getSourceFromUrl(item.url)
-    let details = await parsePage.getStuff(data)
+    let details = await parsePage.getStuff(data, subset)
     await persistance.addMissing(details)  
-    let newest = await db.findAll('new')
+    let newest = await db.findAll('default', { 
+      timestamp: {
+        $gte: "2017-12-13T00:00:00.000Z"
+    }})
     console.log(newest)
+    console.log('sleeping for 30s')
+    await sleep(30000)
   }
   }
 )()
