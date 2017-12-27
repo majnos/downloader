@@ -12,12 +12,13 @@ let getHrefs = function(cheerioObject){
   return href.filter(item => !item.includes("centrum-sluzeb"));
 }
 
-let getSize = function(cheerioObject){
-  let size = []
+let getTitle = function(cheerioObject){
+  let title = []
   cheerioObject('.list .item .desc .surface').each(function(i, elm) {
-      size.push(cheerioObject(this).text() );
+      title.push(cheerioObject(this).text() );
   });
-  return size.filter(item => !item.includes("Smlouvy,"));
+  console.log(JSON.stringify(title))
+  return title.filter(item => !item.includes("Smlouvy,"));
 }
 
 let getPrice = function(cheerioObject){
@@ -37,20 +38,22 @@ async function getStuff(data, subset) {
       });
       let id = await getHrefs($).map(href => href.match(re) );      
       let href = await getHrefs($);
-      let size = await getSize($);
-      let rooms = await size.map(x => x.split(',')[0].split(" ")[2]);
+      let title = await getTitle($);
+      let size = await title.map(x => x.split(',')[1].split(" ")[1]);  //regex na x.xxx m nebo xxx m
+      let rooms = await title.map(x => x.split(',')[0].split(" ")[2]); //regex na cislo+kk(nebo cislo)
       let price = await getPrice($);
       let timestamp = await dates.getDate()
       
-      return size.map(function (a,b) {
+      return title.map(function (a,b) {
               return {
               "id": id[b][0],
-              "size": a,
+              "title": a,
               "href": href[b],
               "price": price[b],
               "rooms": rooms[b],
+              "size": size[b],
               "timestamp": timestamp,
-              "subset": subset, 
+              "subset": subset
               }})
   }
   catch(err){

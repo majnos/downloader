@@ -6,7 +6,6 @@ async function addMissing(details) {
         let checkedItem = await base.findOne(defaultSet, {id: item.id})
         if ( checkedItem === null ) {
             base.insertOne(defaultSet, item)
-            base.findOne(defaultSet, item)
         } else {
             console.log('Item already in database '+item.id)
         }

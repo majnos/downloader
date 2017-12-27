@@ -23,7 +23,7 @@ async function connect(url) {
 
 async function insertOne(selectSet, json) {
     try {
-        console.log('Inserting a '+json+' into the collection: '+selectSet+' at ' + URL)
+        console.log('Inserting a '+JSON.stringify(json)+' into the collection: '+selectSet+' at ' + URL)
         const db = await connect(URL)
         await db.collection(selectSet).insertOne(json);
         await db.close()
@@ -35,12 +35,11 @@ async function insertOne(selectSet, json) {
 
 async function findOne(selectSet, json) {
     try {
-        console.log('looking for: '+ json)
+        console.log('looking for: '+ JSON.stringify(json))
         const db = await connect(URL)
         let collection = db.collection(selectSet)
         let output = await collection.find(json).next()
         await db.close()        
-        console.log('returning: '+output)
         return output
     } catch (err) {
         await db.close()        
@@ -50,7 +49,7 @@ async function findOne(selectSet, json) {
 
 async function findAll(selectSet='default', json) {
     try {
-        console.log('looking for this subjson: '+json)
+        console.log('looking for this subjson: '+ JSON.stringify(json))
         const db = await connect(URL)
         let cursor = db.collection(selectSet).find(json)
         let out = []

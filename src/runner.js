@@ -23,13 +23,13 @@ for (item of regions['bezrealitky']) {
     let data = await getPages.getSourceFromUrl(item.url)
     let details = await parsePage.getStuff(data, subset)
     await persistance.addMissing(details)  
-    let newest = await db.findAll('default', { 
-      timestamp: {
-        $gte: "2017-12-13T00:00:00.000Z"
-    }})
-    console.log(newest)
-    console.log('sleeping for 30s')
-    await sleep(30000)
+    // let newest = await db.findAll('default', { 
+    //   timestamp: {
+    //     $gte: await utils.getPreviousDate(days = 1)
+    // }})
+    // console.log(newest)
+    console.log('sleeping for 10s')
+    await utils.sleep(10000)
   }
   }
 )()
