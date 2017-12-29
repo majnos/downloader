@@ -43,7 +43,7 @@ async function findOne(selectSet, json) {
         return output
     } catch (err) {
         await db.close()        
-        console.log(err)    
+        console.log(err)
     }
 }
 
@@ -54,7 +54,7 @@ async function findAll(selectSet='default', json) {
         let cursor = db.collection(selectSet).find(json)
         let out = []
         for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
-            console.log(doc);
+            // console.log(doc);
             out.push(doc)
           }
         await db.close()   
@@ -83,6 +83,16 @@ async function deleteOne(selectSet, id) {
      }
 }
 
+async function deleteOne(selectSet, id) {
+    try {
+        const db = await connect(URL)
+        db.orders.deleteOne( { "_id" : ObjectId(id) } );
+        await db.close()                        
+     } catch (e) {
+        await db.close()                        
+        print(e);
+     }
+}
 // (async () => {
 //     console.log('start pico vole pico')
 //     await insertOne('new', {text: 'ahojhele'})

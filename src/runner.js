@@ -7,12 +7,12 @@ const getPages = require('./processor/getPages.js')
 const parsePage = require('./processor/parsePage.js')
 const persistance = require('./db/persistanceLogic.js')
 const db = require('./db/baseControl.js')
-const utils = require('./utils/dates.js')
+const utils = require('./utils/dates.js');
 
 
-for (item of regions['bezrealitky']) {
-  console.log(item.url + '\n')
-}
+// for (item of regions['bezrealitky']) {
+//   console.log(item.url + '\n')
+// }
 
 (async () => {
   console.log('start vole')
@@ -21,7 +21,7 @@ for (item of regions['bezrealitky']) {
   let subset = 'bezrealitky'
   for (item of regions[subset]) {
     let data = await getPages.getSourceFromUrl(item.url)
-    let details = await parsePage.getStuff(data, subset)
+    let details = await parsePage.getStuff(data, {provider: subset, region: item.name})
     await persistance.addMissing(details)  
     // let newest = await db.findAll('default', { 
     //   timestamp: {

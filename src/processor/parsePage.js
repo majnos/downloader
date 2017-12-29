@@ -3,11 +3,12 @@ const util = require('util');
 const cheerio = require('cheerio');
 const readFile = util.promisify(fs.readFile);
 const dates = require('./../utils/dates.js')
+const prefix = 'https://bezrealitky.cz'
 
 let getHrefs = function(cheerioObject){
   let href = [];
   cheerioObject('.list .item .desc h3 a').each(function(i, elm) {
-      href.push(cheerioObject(this).attr("href"));
+      href.push(prefix+cheerioObject(this).attr("href"));
   });
   return href.filter(item => !item.includes("centrum-sluzeb"));
 }
@@ -36,11 +37,14 @@ async function getStuff(data, subset) {
           normalizeWhitespace: true,
           xmlMode: true
       });
+      let reMetrage = /\d*.?\d+ / 
+      let reRooms = /\d+[+](kk|\d)/
+
       let id = await getHrefs($).map(href => href.match(re) );      
       let href = await getHrefs($);
       let title = await getTitle($);
-      let size = await title.map(x => x.split(',')[1].split(" ")[1]);  //regex na x.xxx m nebo xxx m
-      let rooms = await title.map(x => x.split(',')[0].split(" ")[2]); //regex na cislo+kk(nebo cislo)
+      let size = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
+      let rooms = await title.map(x => x.match(reRooms) ? x.match(reRooms)[0] : null)
       let price = await getPrice($);
       let timestamp = await dates.getDate()
       
