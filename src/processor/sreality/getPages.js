@@ -6,19 +6,37 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
   
-
-async function clickMore(driver){
+async function clickAndRead(driver){
+	let items = ''
 	try {
 		while(true) {
 			await sleep(TIMEOUT)
 			console.log('slept for ' + TIMEOUT)			
-			console.log('here')			
-			let elem = await driver.findElement(By.className("btn btn-green"))
-			console.log('found')
-			await driver.executeScript("arguments[0].scrollIntoView()", elem)
-			console.log('get dom')
-			await elem.click()
-			console.log('elem clicked')
+			console.log('here')
+			try{
+				console.log('looking for last element')
+				let ending = await driver.findElement(By.className("btn-paging-pn icof icon-arr-right paging-next disabled"))
+				console.log('found last page - adding last page')
+				items = items + await driver.executeScript("return document.documentElement.outerHTML")	
+				return items
+			} catch(err) {
+				console.log(err)
+				if (err.name == 'NoSuchElementError'){
+					console.log('adding items')
+					items = items + await driver.executeScript("return document.documentElement.outerHTML")	
+					console.log('looking for next button')
+					let elem = await driver.findElement(By.className("btn-paging-pn icof icon-arr-right paging-next"))
+					console.log('found')
+					await driver.executeScript("arguments[0].scrollIntoView()", elem)
+					console.log('get dom')
+					await elem.click()
+					console.log('elem clicked')					
+				} 
+				else {
+					console.log('another exception found')
+					throw err
+				}
+			}
 			await sleep(TIMEOUT)
 			console.log('slept for'+TIMEOUT)			
 		}
@@ -32,14 +50,14 @@ async function getSourceFromUrl(url){
 	try { 
 		let driver = await new Builder().forBrowser('chrome').build();
 		await driver.get(url)
-		await clickMore(driver)	
-		let items = await driver.executeScript("return document.documentElement.outerHTML")	
+		let data = await clickAndRead(driver)
 		await driver.quit()	
-		return items
+		return data
 } catch (error) {
 		console.error(error);
 		await driver.quit();		
 	}
 }
+
 
 module.exports.getSourceFromUrl = getSourceFromUrl

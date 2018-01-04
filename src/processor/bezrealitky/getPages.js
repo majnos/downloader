@@ -12,15 +12,11 @@ async function clickMore(driver){
 		while(true) {
 			await sleep(TIMEOUT)
 			console.log('slept for ' + TIMEOUT)			
-			console.log('here')			
 			let elem = await driver.findElement(By.className("btn btn-green"))
-			console.log('found')
 			await driver.executeScript("arguments[0].scrollIntoView()", elem)
-			console.log('get dom')
 			await elem.click()
 			console.log('elem clicked')
 			await sleep(TIMEOUT)
-			console.log('slept for'+TIMEOUT)			
 		}
 		// await clickMore(driver)
 	} catch (error) {

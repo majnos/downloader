@@ -1,22 +1,22 @@
 const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
-const readFile = util.promisify(fs.readFile);
 const dates = require('./../../utils/dates.js')
 const prefix = 'https://sreality.cz'
 
 let getHrefs = function(cheerioObject){
   let href = [];
-  cheerioObject('.list .item .desc h3 a').each(function(i, elm) {
+  cheerioObject('.text-wrap .basic h2 a').each(function(i, elm) {
       href.push(prefix+cheerioObject(this).attr("href"));
   });
+  console.log(JSON.stringify(href))
   return href.filter(item => !item.includes("centrum-sluzeb"));
 }
 
 let getTitle = function(cheerioObject){
   let title = []
-  cheerioObject('.list .item .desc .surface').each(function(i, elm) {
-      title.push(cheerioObject(this).text() );
+  cheerioObject('.text-wrap .basic h2 a span').each(function(i, elm) {
+      title.push(cheerioObject(this).text().replace(/&nbsp;/g,' ') );
   });
   console.log(JSON.stringify(title))
   return title.filter(item => !item.includes("Smlouvy,"));
@@ -28,21 +28,21 @@ let pricePerMeter = function(price, meter){
 
 let getPrice = function(cheerioObject){
   let price = [];
-  cheerioObject('.list .item .desc .price').each(function(i, elm) {
-      price.push(cheerioObject(this).text().replace(/(Kč)|([.])|([ ])/g,'') );
+  cheerioObject('.text-wrap .basic .norm-price').each(function(i, elm) {
+    price.push(cheerioObject(this).text().replace(/&nbsp;/g,'').replace(/(Kč)/g,'') );
   });
   return price;
 }
 
 async function getStuff(data, subset) {
   try{
-      const re  = /(\d){6}|(\d){5}/g
+      const re  = /(\d){10}|(\d){9}|(\d){8}/g
+      let reMetrage = /\d{2}|\d{3} / 
+      let reRooms = /\d+[+](kk|\d)/
       let $ = await cheerio.load(data, {
           normalizeWhitespace: true,
           xmlMode: true
       });
-      let reMetrage = /\d*.?\d+ / 
-      let reRooms = /\d+[+](kk|\d)/
 
       let id = await getHrefs($).map(href => href.match(re) );      
       let href = await getHrefs($);
@@ -70,5 +70,25 @@ async function getStuff(data, subset) {
     console.log(err);
 }
 }
+
+// async function readFile (path) {
+//     return new Promise((resolve,reject) => {
+//         fs.readFile(path, 'utf-8', function (err, content) {
+//             if (err) {
+//                 return reject(err)
+//             }
+//             resolve(content)
+//         }
+//     )})
+// }
+
+// (async () => {
+//     console.log('start vole')
+// 	// let data = await getPages.getSourceFromUrl(url)
+//     // console.log(data)
+//     data = await readFile('sreality.html')
+//     let details = await getStuff(data, {provider: 'sreality', region: 'itemname'})
+// 	// await persistance.addMissing(details)
+// })()
 
 module.exports.getStuff = getStuff

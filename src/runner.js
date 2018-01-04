@@ -18,16 +18,16 @@ const utils = require('./utils/dates.js');
 
 (async () => {
   console.log('start vole')
-  // let subset = 'bezrealitky'
-  // for (item of regions[subset]) {
-  //   let data = await bezrealitky.getPages.getSourceFromUrl(item.url)
-  //   let details = await bezrealitky.parsePage.getStuff(data, {provider: subset, region: item.name})
-  //   await persistance.addMissing(details)  
-  //   console.log('sleeping for 10s')
-  //   await utils.sleep(10000)
-  // }
+  let subset = 'bezrealitky'
+  for (item of regions[subset]) {
+    let data = await bezrealitky.getPages.getSourceFromUrl(item.url)
+    let details = await bezrealitky.parsePage.getStuff(data, {provider: subset, region: item.name})
+    await persistance.addMissing(details)  
+    console.log('sleeping for 10s')
+    await utils.sleep(10000)
+  }
 
-  let subset = 'sreality'
+  subset = 'sreality'
   for (item of regions[subset]) {
     let data = await sreality.getPages.getSourceFromUrl(item.url)
     let details = await sreality.parsePage.getStuff(data, {provider: subset, region: item.name})

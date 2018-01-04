@@ -15,6 +15,18 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/src/runner.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Sreality Get Pages Debug",
+            "program": "${workspaceFolder}/src/processor/sreality/getPages.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Sreality Parse Page Debug",
+            "program": "${workspaceFolder}/src/processor/sreality/parsePage.js"
         }
     ]
 }
