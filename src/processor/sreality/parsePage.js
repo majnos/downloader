@@ -37,7 +37,7 @@ let getPrice = function(cheerioObject){
 async function getStuff(data, subset) {
   try{
       const re  = /(\d){10}|(\d){9}|(\d){8}/g
-      let reMetrage = /\d{2}|\d{3} / 
+      let reMetrage = /\d{3}|\d{2}/
       let reRooms = /\d+[+](kk|\d)/
       let $ = await cheerio.load(data, {
           normalizeWhitespace: true,
