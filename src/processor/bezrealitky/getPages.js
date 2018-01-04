@@ -1,6 +1,5 @@
 const {Builder, By, until} = require('selenium-webdriver');
 let fs = require('fs')
-let os = require('./../utils/os')
 const TIMEOUT = 3000
 
 function sleep(ms) {

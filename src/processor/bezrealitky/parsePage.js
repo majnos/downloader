@@ -2,7 +2,7 @@ const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
 const readFile = util.promisify(fs.readFile);
-const dates = require('./../utils/dates.js')
+const dates = require('./../../utils/dates.js')
 const prefix = 'https://bezrealitky.cz'
 
 let getHrefs = function(cheerioObject){
@@ -22,10 +22,14 @@ let getTitle = function(cheerioObject){
   return title.filter(item => !item.includes("Smlouvy,"));
 }
 
+let pricePerMeter = function(price, meter){
+    return price.map((n, i) => n/meter[i])
+}
+
 let getPrice = function(cheerioObject){
   let price = [];
   cheerioObject('.list .item .desc .price').each(function(i, elm) {
-      price.push(cheerioObject(this).text() );
+      price.push(cheerioObject(this).text().replace(/(Kč)|([.])|([ ])/g,'') );
   });
   return price;
 }
@@ -43,9 +47,10 @@ async function getStuff(data, subset) {
       let id = await getHrefs($).map(href => href.match(re) );      
       let href = await getHrefs($);
       let title = await getTitle($);
-      let size = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
+      let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
       let rooms = await title.map(x => x.match(reRooms) ? x.match(reRooms)[0] : null)
-      let price = await getPrice($);
+      let price = await getPrice($)
+      let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
       
       return title.map(function (a,b) {
@@ -55,7 +60,8 @@ async function getStuff(data, subset) {
               "href": href[b],
               "price": price[b],
               "rooms": rooms[b],
-              "size": size[b],
+              "area": area[b],
+              "ppm": ppm[b],
               "timestamp": timestamp,
               "subset": subset
               }})
