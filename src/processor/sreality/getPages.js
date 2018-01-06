@@ -12,7 +12,6 @@ async function clickAndRead(driver){
 		while(true) {
 			await sleep(TIMEOUT)
 			console.log('slept for ' + TIMEOUT)			
-			console.log('here')
 			try{
 				console.log('looking for last element')
 				let ending = await driver.findElement(By.className("btn-paging-pn icof icon-arr-right paging-next disabled"))
@@ -20,7 +19,7 @@ async function clickAndRead(driver){
 				items = items + await driver.executeScript("return document.documentElement.outerHTML")	
 				return items
 			} catch(err) {
-				console.log(err)
+				// console.log(err)
 				if (err.name == 'NoSuchElementError'){
 					console.log('adding items')
 					items = items + await driver.executeScript("return document.documentElement.outerHTML")	
@@ -42,7 +41,7 @@ async function clickAndRead(driver){
 		}
 		// await clickMore(driver)
 	} catch (error) {
-		console.log('no more buttons - FIX THIS \n ' + error)
+		console.log('no more buttons - FIX THIS ????  \n ')
 	}
 }
 

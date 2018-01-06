@@ -36,7 +36,7 @@ let getPrice = function(cheerioObject){
 
 async function getStuff(data, subset) {
   try{
-      const re  = /(\d){10}|(\d){9}|(\d){8}/g
+      const re  = /(\d){11}|(\d){10}|(\d){9}|(\d){8}|(\d){7}|(\d){6}|(\d){5}|(\d){4}/g
       let reMetrage = /\d{3}|\d{2}/
       let reRooms = /\d+[+](kk|\d)/
       let $ = await cheerio.load(data, {
@@ -44,7 +44,7 @@ async function getStuff(data, subset) {
           xmlMode: true
       });
 
-      let id = await getHrefs($).map(href => href.match(re) );      
+      let id = await getHrefs($).map( href => href.match(re)[0]  );      
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
@@ -52,10 +52,11 @@ async function getStuff(data, subset) {
       let price = await getPrice($)
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
+      console.log('parsing done')
       
       return title.map(function (a,b) {
               return {
-              "id": id[b][0],
+              "id": id[b],
               "title": a,
               "href": href[b],
               "price": price[b],
@@ -70,25 +71,5 @@ async function getStuff(data, subset) {
     console.log(err);
 }
 }
-
-// async function readFile (path) {
-//     return new Promise((resolve,reject) => {
-//         fs.readFile(path, 'utf-8', function (err, content) {
-//             if (err) {
-//                 return reject(err)
-//             }
-//             resolve(content)
-//         }
-//     )})
-// }
-
-// (async () => {
-//     console.log('start vole')
-// 	// let data = await getPages.getSourceFromUrl(url)
-//     // console.log(data)
-//     data = await readFile('sreality.html')
-//     let details = await getStuff(data, {provider: 'sreality', region: 'itemname'})
-// 	// await persistance.addMissing(details)
-// })()
 
 module.exports.getStuff = getStuff

@@ -13,16 +13,7 @@
     { "name": "Zadni-Treban-Dobrichovice", "url": "https://www.bezrealitky.cz/vyhledat#/%3Forder=time_order_desc&advertoffertype=nabidka-prodej&estatetype=byt&ownership=&equipped=&address=&estatetype%5B%5D=byt&priceFrom=null&priceTo=6500000&construction=&description=&surfaceFrom=75&surfaceTo=&balcony=&terrace=&map=50.069706,14.315167,50.129277,14.438592,13&disposition%5B%5D=3-kk&disposition%5B%5D=3-1&disposition%5B%5D=4-kk&disposition%5B%5D=4-1&disposition%5B%5D=5-kk?map=49.877127,14.127616,49.965323,14.359874,13&order=time_order_desc&advertoffertype=nabidka-prodej&ownership=&equipped=&priceFrom=null&priceTo=6500000&construction=&description=&surfaceFrom=75surfaceTo=&balcony=&terrace=&disposition%5B%5D=3-kk&disposition%5B%5D=3-1&disposition%5B%5D=4-kk&disposition%5B%5D=4-1"}        
   ],  
   "sreality": [
-    { "name": "Praha-1-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-1?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000" },
-    { "name": "Praha-2-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-2?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000" },
-    { "name": "Praha-3-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-3?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000" },
-    { "name": "Praha-4-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-4?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000" },
-    { "name": "Praha-6-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-6?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000" },
-    { "name": "Praha-7-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-7?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000" },
-    { "name": "Praha-vychod-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-vychod?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000"},
-    { "name": "Praha-zapad-byt", "url": "https://www.sreality.cz/hledani/prodej/byty/praha-zapad?vlastnictvi=osobni,statni-obecni&patro-od=0&patro-do=2&plocha-od=75&plocha-do=10000000000&cena-od=0&cena-do=6500000"},    
-    { "name": "Praha-Projekty", "url": "https://www.sreality.cz/projekt/domy,byty,komercni-nemovitosti,pozemky,ostatni-reality/praha-1,praha-2,praha-3,praha-4,praha-6,beroun,benesov,praha-vychod,praha-zapad,melnik,kladno,kolin"},
-    { "name": "Praha-Zapad-Vychod-domy", "url": "https://www.sreality.cz/hledani/prodej/domy/rodinne-domy/praha,praha-vychod,praha-zapad?plocha-od=110&plocha-do=10000000000&cena-od=0&cena-do=6500000&plocha-pozemku-od=300&plocha-pozemku-do=10000000000"}
+    { "name": "Praha-Projekty", "url": "https://www.sreality.cz/projekt/domy,byty,komercni-nemovitosti,pozemky,ostatni-reality/praha-1,praha-2,praha-3,praha-4,praha-6,beroun,benesov,praha-vychod,praha-zapad,melnik,kladno,kolin"}
   ],
   "idnes": [{ "name": "Praha6", "url": "http://xyz" }]
 }

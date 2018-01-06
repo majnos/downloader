@@ -20,7 +20,7 @@ async function clickMore(driver){
 		}
 		// await clickMore(driver)
 	} catch (error) {
-		console.log('no more buttons - FIX THIS \n ' + error)
+		console.log('no more buttons - FIX THIS????? \n ')
 	}
 }
 
@@ -33,7 +33,7 @@ async function getSourceFromUrl(url){
 		await driver.quit()	
 		return items
 } catch (error) {
-		console.error(error);
+		// console.error(error);
 		await driver.quit();		
 	}
 }

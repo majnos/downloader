@@ -10,5 +10,9 @@ const regions = require('./metadata/regions');
         $gte: await utils.getPreviousDate(days = 1)
     }})
     console.log(newest)
+    // console.log('start vole')
+    // let subset = 'bezrealitky'
+    // let newest = await db.findAll('default', {})
+    // console.log(newest)  
   }
 )()

@@ -1,18 +1,8 @@
 start vole
-looking for this subjson: {"timestamp":{"$gte":"2018-01-05T09:47:23.013Z"}}
+looking for this subjson: {"timestamp":{"$gte":"2018-01-05T22:02:55.643Z"}}
 Connecting to servermongodb://localhost:27017/myproject
 Successfuly connected to the server
-[ { _id: 5a4f4acf3e73e6176f696fee,
-    id: '3813437788',
-    title: 'Prodej bytu 3+kk 81 m²',
-    href: 'https://sreality.cz/detail/prodej/byt/3+kk/praha-repy-vondrousova/3813437788',
-    price: '4500000',
-    rooms: '3+kk',
-    area: '81',
-    ppm: 55555.555555555555,
-    timestamp: '2018-01-05T09:52:15.389Z',
-    subset: { provider: 'sreality', region: 'Praha6' } },
-  { _id: 5a5003b4824549300a9d4470,
+[ { _id: 5a5003b4824549300a9d4470,
     id: '3708580188',
     title: 'Prodej bytu 3+1 81 m²',
     href: 'https://sreality.cz/detail/prodej/byt/3+1/praha-repy-vondrousova/3708580188',
@@ -1002,4 +992,14 @@ Successfuly connected to the server
     ppm: 25183.206106870228,
     timestamp: '2018-01-06T08:51:48.736Z',
     subset: { provider: 'sreality', region: 'Praha' } },
-  ... 104 more items ]
+  { _id: 5a508e2589c34a4f7152d5be,
+    id: '1535799644',
+    title: 'Prodej bytu 4+kk 96 m²',
+    href: 'https://sreality.cz/detail/prodej/byt/4+kk/stredokluky-stredokluky-lidicka/1535799644',
+    price: '4225000',
+    rooms: '4+kk',
+    area: '96',
+    ppm: 44010.416666666664,
+    timestamp: '2018-01-06T08:51:48.736Z',
+    subset: { provider: 'sreality', region: 'Praha' } },
+  ... 419 more items ]
