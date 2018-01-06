@@ -27,13 +27,5 @@ const utils = require('./utils/dates.js');
     await utils.sleep(10000)
   }
 
-  subset = 'sreality'
-  for (item of regions[subset]) {
-    let data = await sreality.getPages.getSourceFromUrl(item.url)
-    let details = await sreality.parsePage.getStuff(data, {provider: subset, region: item.name})
-    await persistance.addMissing(details)  
-    console.log('sleeping for 10s')
-    await utils.sleep(10000)
-  }
   }
 )()
