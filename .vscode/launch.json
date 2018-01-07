@@ -34,6 +34,23 @@
             "request": "launch",
             "name": "Sreality Runner Debug",
             "program": "${workspaceFolder}/src/runner-sreality.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Idnes Get Pages Debug",
+            "program": "${workspaceFolder}/src/processor/idnes/getPages.js"
+        },        {
+            "type": "node",
+            "request": "launch",
+            "name": "Sreality Parse Page Debug",
+            "program": "${workspaceFolder}/src/processor/sreality/parsePage.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Idnes Parse Page Debug",
+            "program": "${workspaceFolder}/src/processor/idnes/parsePage.js"
         }
     ]
 }

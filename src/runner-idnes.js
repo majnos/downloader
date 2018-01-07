@@ -6,7 +6,7 @@ const regions = require('./metadata/regions.json')
 // const getPages = require('./processor/getPages.js')
 // const parsePage = require('./processor/parsePage.js')
 const bezrealitky = require('./processor/bezrealitky/base.js');
-const sreality = require('./processor/sreality/base.js');
+const idnes = require('./processor/idnes/base.js');
 const persistance = require('./db/persistanceLogic.js');
 const db = require('./db/baseControl.js');
 const utils = require('./utils/dates.js');
@@ -19,16 +19,16 @@ const utils = require('./utils/dates.js');
 (async () => {
   console.log('start vole')
 
-  subset = 'sreality'
+  subset = 'idnes'
   for (item of regions[subset]) {
     console.log(`Scraping region: ${JSON.stringify(item)} and subset: ${subset}`)
-    let data = await sreality.getPages.getSourceFromUrl(item.url)
+    let data = await idnes.getPages.getSourceFromUrl(item.url)
     if (data === undefined) {
         console.log('No data found')
         continue
     }
     // console.log(data)
-    let details = await sreality.parsePage.getStuff(data, {provider: subset, region: item.name})
+    let details = await idnes.parsePage.getStuff(data, {provider: subset, region: item.name})
     await persistance.addMissing(details)  
     console.log('sleeping for 10s')
     await utils.sleep(10000)

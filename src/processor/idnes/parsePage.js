@@ -2,11 +2,11 @@ const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
 const dates = require('./../../utils/dates.js')
-const prefix = 'https://sreality.cz'
+const prefix = 'https://reality-idnes.cz'
 
 let getHrefs = function(cheerioObject){
   let href = [];
-  cheerioObject('.text-wrap .basic h2 a').each(function(i, elm) {
+  cheerioObject('.item h2 a').each(function(i, elm) {
       href.push(prefix+cheerioObject(this).attr("href"));
   });
   console.log(JSON.stringify(href))
@@ -15,8 +15,8 @@ let getHrefs = function(cheerioObject){
 
 let getTitle = function(cheerioObject){
   let title = []
-  cheerioObject('.text-wrap .basic h2 a span').each(function(i, elm) {
-      title.push(cheerioObject(this).text().replace(/&nbsp;/g,' ') );
+  cheerioObject('.item h2 a').each(function(i, elm) {
+      title.push(cheerioObject(this).text());
   });
   console.log(JSON.stringify(title))
   return title.filter(item => !item.includes("Smlouvy,"));
@@ -28,8 +28,8 @@ let pricePerMeter = function(price, meter){
 
 let getPrice = function(cheerioObject){
   let price = [];
-  cheerioObject('.text-wrap .basic .norm-price').each(function(i, elm) {
-    price.push(cheerioObject(this).text().replace(/&nbsp;/g,'').replace(/(Kč)/g,'') );
+  cheerioObject('.item .price').each(function(i, elm) {
+    price.push(cheerioObject(this).text().replace(/&nbsp;/g,'').replace(/(Kč)/g,'').match(/\d{7}/g));
   });
   return price;
 }
@@ -49,7 +49,7 @@ async function getStuff(data, subset) {
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
       let rooms = await title.map(x => x.match(reRooms) ? x.match(reRooms)[0] : null)
-      let price = await getPrice($)
+      let price = await getPrice($).map( x => x !== null ? x[0] : null)
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
       console.log('parsing done')
@@ -71,5 +71,35 @@ async function getStuff(data, subset) {
     console.log(err);
 }
 }
+
+
+// async function readConfigFile () {
+//   return new Promise((resolve,reject) => {
+//       fs.readFile('./src/processor/idnes/idnes.html','utf-8', function (err, content) {
+//           if (err) {
+//               return reject(err)
+//           }
+//           resolve(content)
+//       }
+//   )})
+// }
+
+
+// (async () => {
+// 	console.log('start vole')
+	// let data = await getSourceFromUrl(url)
+	// console.log(data)
+	//   if (data === undefined) {
+	// 	  console.log('No data found')
+	// 	  continuegetPages
+	//   }
+	//   // console.log(data)
+	// let data = await readConfigFile()
+	// let details = await getStuff(data, {provider: "idnes", region: "test"})
+	// await persistance.addMissing(details)  
+	// console.log('sleeping for 10s')
+	// await utils.sleep(10000)
+	// }
+  // )()
 
 module.exports.getStuff = getStuff

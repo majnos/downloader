@@ -44,7 +44,7 @@ async function getStuff(data, subset) {
       let reMetrage = /\d*.?\d+ / 
       let reRooms = /\d+[+](kk|\d)/
 
-      let id = await getHrefs($).map(href => href.match(re) );      
+      let id = await getHrefs($).map(href => "subset-"+href.match(re) );      
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
