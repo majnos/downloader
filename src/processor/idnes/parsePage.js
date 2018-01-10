@@ -2,12 +2,14 @@ const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
 const dates = require('./../../utils/dates.js')
-const prefix = 'https://reality-idnes.cz'
+const prefix = 'https://reality.idnes.cz/'
 
 let getHrefs = function(cheerioObject){
   let href = [];
   cheerioObject('.item h2 a').each(function(i, elm) {
+    if (this.parent.parent.attribs.class !== 'item lastItem') {
       href.push(prefix+cheerioObject(this).attr("href"));
+    }
   });
   console.log(JSON.stringify(href))
   return href.filter(item => !item.includes("centrum-sluzeb"));
@@ -15,8 +17,13 @@ let getHrefs = function(cheerioObject){
 
 let getTitle = function(cheerioObject){
   let title = []
+  let lastItem = {
+    class: 'item lastItem'
+  }
   cheerioObject('.item h2 a').each(function(i, elm) {
-      title.push(cheerioObject(this).text());
+      if (this.parent.parent.attribs.class !== 'item lastItem') {
+        title.push(cheerioObject(this).text());
+      }
   });
   console.log(JSON.stringify(title))
   return title.filter(item => !item.includes("Smlouvy,"));
@@ -44,7 +51,7 @@ async function getStuff(data, subset) {
           xmlMode: true
       });
 
-      let id = await getHrefs($).map( href => "subset-"+href.match(re)[0]  );      
+      let id = await getHrefs($).map( href => `idnes-${href.match(re)[0]}` );      
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)

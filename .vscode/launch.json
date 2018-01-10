@@ -14,8 +14,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/src/runner.js"
+            "name": "Bezrealitky Runner",
+            "program": "${workspaceFolder}/src/runner-bezrealitky.js"
         },
         {
             "type": "node",
@@ -51,6 +51,12 @@
             "request": "launch",
             "name": "Idnes Parse Page Debug",
             "program": "${workspaceFolder}/src/processor/idnes/parsePage.js"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Idnes Runner Debug",
+            "program": "${workspaceFolder}/src/runner-idnes.js"
+        },
     ]
 }

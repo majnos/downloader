@@ -18,7 +18,8 @@
     "xml2js": "^0.4.19"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scrap": "node src/runner-bezrealitky.js && node src/runner-sreality.js && node src/runner-idnes.js"
   },
   "author": "",
   "license": "ISC",

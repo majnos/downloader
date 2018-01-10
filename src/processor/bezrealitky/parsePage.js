@@ -44,7 +44,7 @@ async function getStuff(data, subset) {
       let reMetrage = /\d*.?\d+ / 
       let reRooms = /\d+[+](kk|\d)/
 
-      let id = await getHrefs($).map(href => "subset-"+href.match(re) );      
+      let id = await getHrefs($).map(href => `bez-${href.match(re)}` );      
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
@@ -55,7 +55,7 @@ async function getStuff(data, subset) {
       
       return title.map(function (a,b) {
               return {
-              "id": id[b][0],
+              "id": id[b],
               "title": a,
               "href": href[b],
               "price": price[b],

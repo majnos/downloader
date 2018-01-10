@@ -6,8 +6,7 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const url = "https://reality.idnes.cz/s/?st=2&f_typ_nabidky%5B%5D=1&isa%5B%5D=1&f_s_vlastnictvi%5B%5D=1&f_s_vlastnictvi%5B%5D=2&f_s_vlastnictvi%5B%5D=3&lf%5B%5D=1&f_kraj%5B%5D=1&f_okres1%5B%5D=84&cena_do=6500000&plocha_od=75&f_s_aktualni=1"
-
+// const url = "https://reality.idnes.cz/s/?st=2&f_typ_nabidky%5B%5D=1&isa%5B%5D=1&f_s_vlastnictvi%5B%5D=1&f_s_vlastnictvi%5B%5D=2&f_s_vlastnictvi%5B%5D=3&lf%5B%5D=1&f_kraj%5B%5D=1&f_okres1%5B%5D=84&cena_do=6500000&plocha_od=75&f_s_aktualni=1"
 
 
 async function clickAndRead(driver){
@@ -58,9 +57,5 @@ async function getSourceFromUrl(url){
 		await driver.quit();		
 	}
 }
-
-
- 
-
 
 module.exports.getSourceFromUrl = getSourceFromUrl

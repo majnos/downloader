@@ -44,7 +44,7 @@ async function getStuff(data, subset) {
           xmlMode: true
       });
 
-      let id = await getHrefs($).map( href => "subset-"+href.match(re)[0]  );      
+      let id = await getHrefs($).map( href => `sreality-${href.match(re)[0]}` );      
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)

@@ -3,7 +3,7 @@ const utils = require('./utils/dates.js');
 const regions = require('./metadata/regions');
 
 (async () => {
-  console.log('start vole')
+  console.log(`start vole`)
   let subset = 'bezrealitky'
     let newest = await db.findAll('default', { 
       timestamp: {
