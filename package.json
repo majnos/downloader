@@ -19,7 +19,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scrap": "node src/runner-bezrealitky.js && node src/runner-sreality.js && node src/runner-idnes.js"
+    "scrap": "node src/runner-bezrealitky.js && node src/runner-sreality.js && node src/runner-idnes.js",
+    "show": "rm output.json && node src/show.js > output.json"
   },
   "author": "",
   "license": "ISC",
