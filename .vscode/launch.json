@@ -58,5 +58,17 @@
             "name": "Idnes Runner Debug",
             "program": "${workspaceFolder}/src/runner-idnes.js"
         },
-    ]
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "realitymix Get Pages Debug",
+            "program": "${workspaceFolder}/src/processor/realitymix/getPages.js"
+        },     
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Realitymix Parse Pages Debug",
+            "program": "${workspaceFolder}/src/processor/realitymix/parsePage.js"
+        }    
+     ]
 }
