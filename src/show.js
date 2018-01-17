@@ -8,9 +8,9 @@ const regions = require('./metadata/regions');
   let subset = 'bezrealitky'
     let newest = await db.findAll('default', { 
       timestamp: {
-        $gte: await utils.getPreviousDate(days = 2)
+        $gte: await utils.getPreviousDate(days = 1)
     }})
-    console.log(newest)
+    newest.forEach(item => console.log(item))
     // console.log('start vole')
     // let subset = 'bezrealitky'
     // let newest = await db.findAll('default', {})
