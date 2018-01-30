@@ -28,7 +28,7 @@ let pricePerMeter = function(price, meter){
 
 let getPrice = function(cheerioObject){
   let price = [];
-  cheerioObject('.item .price').each(function(i, elm) {
+  cheerioObject('.price').each(function(i, elm) {
     price.push(cheerioObject(this).text().replace(/&nbsp;/g,'').replace(/(Kč)/g,'').match(/\d{7}/g));
   });
   return price;

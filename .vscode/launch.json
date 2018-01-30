@@ -69,6 +69,24 @@
             "request": "launch",
             "name": "Realitymix Parse Pages Debug",
             "program": "${workspaceFolder}/src/processor/realitymix/parsePage.js"
-        }    
-     ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Realitymix Runner Debug",
+            "program": "${workspaceFolder}/src/runner-realitymix.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Stat Debug",
+            "program": "${workspaceFolder}/src/stats.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "preprocess Debug",
+            "program": "${workspaceFolder}/src/utils/preprocess.js"
+        }
+    ]
 }

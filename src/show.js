@@ -5,12 +5,11 @@ const regions = require('./metadata/regions');
 
 (async () => {
   console.log(`start vole`)
-  let subset = 'bezrealitky'
-    let newest = await db.findAll('default', { 
-      timestamp: {
-        $gte: await utils.getPreviousDate(days = 1)
-    }})
-    newest.forEach(item => console.log(item))
+  let newest = await db.findAll('default', { 
+    timestamp: {
+      $gte: await utils.getPreviousDate(days = 2)
+  }})
+  newest.forEach(item => console.log(item))
     // console.log('start vole')
     // let subset = 'bezrealitky'
     // let newest = await db.findAll('default', {})
