@@ -1,29 +1,22 @@
-const fs = require('fs')
-const util = require('util')
-const cheerio = require('cheerio')
-const readFile = util.promisify(fs.readFile)
 const regions = require('./metadata/regions.json')
-// const getPages = require('./processor/getPages.js')
-// const parsePage = require('./processor/parsePage.js')
 const bezrealitky = require('./processor/bezrealitky/base.js');
-const sreality = require('./processor/sreality/base.js');
 const persistance = require('./db/persistanceLogic.js');
-const db = require('./db/baseControl.js');
 const utils = require('./utils/dates.js');
-
-
-// for (item of regions['bezrealitky']) {
-//   console.log(item.url + '\n')
-// }
+const log = require.main.require('./logger.js');
 
 (async () => {
-  console.log('start vole')
+  log.info('start vole - bezrealitky')
   let subset = 'bezrealitky'
   for (item of regions[subset]) {
+    log.debug(`Scraping region: ${JSON.stringify(item)} and subset: ${subset}`)
     let data = await bezrealitky.getPages.getSourceFromUrl(item.url)
+    if (data === undefined) {
+      log.debug('No data found')
+      continue
+  }
     let details = await bezrealitky.parsePage.getStuff(data, {provider: subset, region: item.name})
     await persistance.addMissing(details)  
-    console.log('sleeping for 10s')
+    log.debug('sleeping for 10s')
     await utils.sleep(10000)
   }
 

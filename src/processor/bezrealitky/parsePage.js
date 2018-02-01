@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const readFile = util.promisify(fs.readFile);
 const dates = require('./../../utils/dates.js')
 const prefix = 'https://bezrealitky.cz'
+const log = require.main.require('./logger.js');
 
 let getHrefs = function(cheerioObject){
   let href = [];
@@ -18,7 +19,7 @@ let getTitle = function(cheerioObject){
   cheerioObject('.list .item .desc .surface').each(function(i, elm) {
       title.push(cheerioObject(this).text() );
   });
-  console.log(JSON.stringify(title))
+  //log.info(JSON.stringify(title))
   return title.filter(item => !item.includes("Smlouvy,"));
 }
 
@@ -36,6 +37,7 @@ let getPrice = function(cheerioObject){
 
 async function getStuff(data, subset) {
   try{
+      log.info('Starting parsing of the page')
       const re  = /(\d){6}|(\d){5}/g
       let $ = await cheerio.load(data, {
           normalizeWhitespace: true,
@@ -52,6 +54,7 @@ async function getStuff(data, subset) {
       let price = await getPrice($)
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
+      log.info('Parsing done')
       
       return title.map(function (a,b) {
               return {
@@ -67,7 +70,7 @@ async function getStuff(data, subset) {
               }})
   }
   catch(err){
-    console.log(err);
+    log.error(err);
 }
 }
 

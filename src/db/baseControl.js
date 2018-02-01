@@ -1,3 +1,4 @@
+const log = require.main.require('./logger.js')
 const MongoClient = require('mongodb').MongoClient
 // const assert = require('assert');
 const TESTDATA =  { 
@@ -12,30 +13,30 @@ const URL = 'mongodb://localhost:27017/myproject'
 
 async function connect(url) {
     try {
-        console.log('Connecting to server' + url)
+        log.debug('Connecting to server' + url)
         let db = await MongoClient.connect(url)
-        console.log('Successfuly connected to the server') 
+        log.debug('Successfuly connected to the server') 
         return db
     } catch (err) {
-        console.log(err)
+        log.error(err)
     }
 }
 
 async function insertOne(selectSet, json) {
     try {
-        console.log('Inserting a '+JSON.stringify(json)+' into the collection: '+selectSet+' at ' + URL)
+        log.debug('Inserting a '+JSON.stringify(json)+' into the collection: '+selectSet+' at ' + URL)
         const db = await connect(URL)
         await db.collection(selectSet).insertOne(json);
         await db.close()
     } catch (err) {
         await db.close()        
-        console.log(err)
+        log.debug(err)
     }
 }
 
 async function findOne(selectSet, json) {
     try {
-        console.log('looking for: '+ JSON.stringify(json))
+        log.debug('looking for: '+ JSON.stringify(json))
         const db = await connect(URL)
         let collection = db.collection(selectSet)
         let output = await collection.find(json).next()
@@ -43,32 +44,32 @@ async function findOne(selectSet, json) {
         return output
     } catch (err) {
         await db.close()        
-        console.log(err)
+        log.debug(err)
     }
 }
 
 async function findAll(selectSet='default', json) {
     try {
-        console.log('looking for this subjson: '+ JSON.stringify(json))
+        log.debug('looking for this subjson: '+ JSON.stringify(json))
         const db = await connect(URL)
         let cursor = db.collection(selectSet).find(json)
         let out = []
         for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
-            // console.log(doc);
+            log.debug(doc);
             out.push(doc)
           }
         await db.close()   
         return out             
     } catch (err) {
         // await db.close()        
-        console.log(err)
+        log.debug(err)
     }
 }
 
 async function purgeSet(selectSet){
     const db = await connect(URL)
     await db.collection(selectSet).remove({})
-    console.log('Collection ' + selectSet + ' purged.' )
+    log.debug('Collection ' + selectSet + ' purged.' )
     await db.close()
 }
 
@@ -93,18 +94,6 @@ async function deleteOne(selectSet, id) {
         print(e);
      }
 }
-// (async () => {
-//     console.log('start pico vole pico')
-//     await insertOne('new', {text: 'ahojhele'})
-//     //
-//     await purgeSet('new')
-//     await findAll('new')
-
-//     // let testik = await findAll(
-//     //     {}
-//     // )    
-//     console.log('done pico')
-//     })()
 
 module.exports.insertOne = insertOne
 module.exports.findOne = findOne

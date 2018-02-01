@@ -3,13 +3,14 @@ const util = require('util');
 const cheerio = require('cheerio');
 const dates = require('./../../utils/dates.js')
 const prefix = 'https://sreality.cz'
+const log = require.main.require('./logger.js');
 
 let getHrefs = function(cheerioObject){
   let href = [];
   cheerioObject('.text-wrap .basic h2 a').each(function(i, elm) {
       href.push(prefix+cheerioObject(this).attr("href"));
   });
-  console.log(JSON.stringify(href))
+  //log.debug(JSON.stringify(href))
   return href.filter(item => !item.includes("centrum-sluzeb"));
 }
 
@@ -18,7 +19,7 @@ let getTitle = function(cheerioObject){
   cheerioObject('.text-wrap .basic h2 a span').each(function(i, elm) {
       title.push(cheerioObject(this).text().replace(/&nbsp;/g,' ') );
   });
-  console.log(JSON.stringify(title))
+  //log.debug(JSON.stringify(title))
   return title.filter(item => !item.includes("Smlouvy,"));
 }
 
@@ -36,6 +37,7 @@ let getPrice = function(cheerioObject){
 
 async function getStuff(data, subset) {
   try{
+      log.info('Starting parsing of the page')
       const re  = /(\d){11}|(\d){10}|(\d){9}|(\d){8}|(\d){7}|(\d){6}|(\d){5}|(\d){4}/g
       let reMetrage = /\d{3}|\d{2}/
       let reRooms = /\d+[+](kk|\d)/
@@ -52,7 +54,7 @@ async function getStuff(data, subset) {
       let price = await getPrice($)
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
-      console.log('parsing done')
+      log.info('Parsing done')
       
       return title.map(function (a,b) {
               return {
@@ -68,7 +70,7 @@ async function getStuff(data, subset) {
               }})
   }
   catch(err){
-    console.log(err);
+    log.error(err);
 }
 }
 

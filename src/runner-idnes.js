@@ -1,23 +1,11 @@
-const fs = require('fs')
-const util = require('util')
-const cheerio = require('cheerio')
-const readFile = util.promisify(fs.readFile)
 const regions = require('./metadata/regions.json')
-// const getPages = require('./processor/getPages.js')
-// const parsePage = require('./processor/parsePage.js')
-const bezrealitky = require('./processor/bezrealitky/base.js');
 const idnes = require('./processor/idnes/base.js');
 const persistance = require('./db/persistanceLogic.js');
-const db = require('./db/baseControl.js');
 const utils = require('./utils/dates.js');
-
-
-// for (item of regions['bezrealitky']) {
-//   console.log(item.url + '\n')
-// }
+const log = require.main.require('./logger.js');
 
 (async () => {
-  console.log('start vole')
+  console.log('start vole - idnes')
 
   subset = 'idnes'
   for (item of regions[subset]) {

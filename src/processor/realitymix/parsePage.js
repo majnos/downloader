@@ -3,13 +3,14 @@ const util = require('util');
 const cheerio = require('cheerio');
 const dates = require('./../../utils/dates.js')
 const prefix = "www.realitymix.cz/"
+const log = require.main.require('./logger.js');
 
 let getHrefs = function(cheerioObject){
   let href = [];
   cheerioObject('.list-title a').each(function(i, elm) {
       href.push(elm.attribs.href);
   });
-  console.log(JSON.stringify(href))
+  // log.info(JSON.stringify(href))
   return href;
 }
 
@@ -18,7 +19,7 @@ let getTitle = function(cheerioObject){
   cheerioObject('.list-title a').each(function(i, elm) {
         title.push(elm.attribs.title);
   });
-  console.log(JSON.stringify(title))
+  // log.info(JSON.stringify(title))
   return title.filter(item => !item.includes("Smlouvy,"));
 }
 
@@ -36,6 +37,7 @@ let getPrice = function(cheerioObject){
 
 async function getStuff(data, subset) {
   try{
+      log.info('Starting parsing of the page')
       const re  = /(\d){11}|(\d){10}|(\d){9}|(\d){8}|(\d){7}|(\d){6}/g
       let reMetrage = /\d{3}|\d{2}/
       let reRooms = /\d+[+](kk|\d)/
@@ -52,7 +54,7 @@ async function getStuff(data, subset) {
       let price = await getPrice($).map( x => x !== null ? x[0] : null)
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
-      console.log('parsing done')
+      log.info('Parsing done')
       
       return title.map(function (a,b) {
               return {
@@ -68,38 +70,8 @@ async function getStuff(data, subset) {
               }})
   }
   catch(err){
-    console.log(err);
+    log.error(err);
 }
 }
-
-
-// async function readConfigFile () {
-//   return new Promise((resolve,reject) => {
-//       fs.readFile('./src/processor/realitymix/realitymix.html','utf-8', function (err, content) {
-//           if (err) {
-//               return reject(err)
-//           }
-//           resolve(content)
-//       }
-//   )})
-// }
-
-
-// (async () => {
-// 	// console.log('start vole')
-// 	// let data = await getSourceFromUrl(url)
-// 	// console.log(data)
-// 	//   if (data === undefined) {
-// 	// 	  console.log('No data found')
-// 	// 	  continuegetPages
-// 	//   }
-// 	  // console.log(data)
-// 	let data = await readConfigFile()
-// 	let details = await getStuff(data, {provider: "realitymix", region: "test"})
-// 	// await persistance.addMissing(details)  
-// 	console.log('sleeping for 10s')
-// 	/// await utils.sleep(10000)
-// 	}
-//   )()
 
 module.exports.getStuff = getStuff

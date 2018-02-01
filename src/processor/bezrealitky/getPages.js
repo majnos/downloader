@@ -8,25 +8,24 @@ options.addArguments(
     'headless',
     'disable-gpu'
 );
+const log = require.main.require('./logger.js');
 
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function clickMore(driver){
+	log.info('Clicking in the browser')
 	try {
 		while(true) {
 			await sleep(TIMEOUT)
-			console.log('slept for ' + TIMEOUT)			
 			let elem = await driver.findElement(By.className("btn btn-green"))
 			await driver.executeScript("arguments[0].scrollIntoView()", elem)
 			await elem.click()
-			console.log('elem clicked')
 			await sleep(TIMEOUT)
 		}
-		// await clickMore(driver)
 	} catch (error) {
-		console.log('no more buttons - FIX THIS????? \n ')
+		log.info('Returning items')
 	}
 }
 
@@ -39,7 +38,6 @@ async function getSourceFromUrl(url){
 		await driver.quit()	
 		return items
 } catch (error) {
-		// console.error(error);
 		await driver.quit();		
 	}
 }
