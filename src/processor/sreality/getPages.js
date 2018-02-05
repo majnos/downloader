@@ -41,7 +41,8 @@ async function clickAndRead(driver){
 			await sleep(TIMEOUT)
 		}
 	} catch (error) {
-		log.info('Not expected ')
+		log.warn('No item or single page results - possible error - here, fix it !!! ')
+		return items
 	}
 }
 
