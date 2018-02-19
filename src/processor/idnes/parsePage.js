@@ -73,7 +73,8 @@ async function getStuff(data, subset) {
               "area": area[b],
               "ppm": ppm[b],
               "timestamp": timestamp,
-              "subset": subset
+              "provider": subset['provider'],
+              "region": subset['region']
               }})
   }
   catch(err){
