@@ -16,8 +16,8 @@ const log = require.main.require('./logger.js');
   }
     let details = await bezrealitky.parsePage.getStuff(data, {provider: subset, region: item.name})
     await persistance.addMissing(details)  
-    log.debug('sleeping for 10s')
-    await utils.sleep(10000)
+    log.debug('sleeping for 1s')
+    await utils.sleep(1000)
   }
 
   }

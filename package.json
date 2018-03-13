@@ -22,7 +22,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "scrap": "node src/runner-bezrealitky.js && node src/runner-sreality.js && node src/runner-idnes.js && node src/runner-realitymix.js",
-    "show": "rm output.json && node src/show.js > output.json"
+    "show": "rm output.json -f && node src/show.js > output.json"
   },
   "author": "",
   "license": "ISC",

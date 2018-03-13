@@ -4,10 +4,10 @@ const TIMEOUT = 3000
 const {Builder, By, until} = require('selenium-webdriver');
 const chromeDriver = require('selenium-webdriver/chrome.js');
 const options = new chromeDriver.Options();
-options.addArguments(
-    'headless',
-    'disable-gpu'
-);
+// options.addArguments(
+//     'headless',
+//     'disable-gpu'
+// );
 const log = require.main.require('./logger.js');
 
 function sleep(ms) {

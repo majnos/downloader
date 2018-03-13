@@ -18,8 +18,8 @@ const log = require.main.require('./logger.js');
     // console.log(data)
     let details = await idnes.parsePage.getStuff(data, {provider: subset, region: item.name})
     await persistance.addMissing(details)  
-    console.log('sleeping for 10s')
-    await utils.sleep(10000)
+    console.log('sleeping for 1s')
+    await utils.sleep(1000)
     }
   }
 )()
