@@ -2,18 +2,23 @@ const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
 const dates = require('./../../utils/dates.js')
-const prefix = 'https://reality.idnes.cz/'
+const prefix = 'https://reality.idnes.cz'
 const log = require.main.require('./logger.js');
+
+// $(".c-list-products__title").toArray().map(item => item.innerText)
+// $(".c-list-products__info")
+// $(".c-list-products__content")
+// $(".c-list-products__link")[0].href
+// $(".c-list-products__price")[0]
+// $(".c-list-products__title").text()
+
 
 let getHrefs = function(cheerioObject){
   let href = [];
-  cheerioObject('.item h2 a').each(function(i, elm) {
-    if (this.parent.parent.attribs.class !== 'item lastItem') {
+  cheerioObject('.c-list-products__link').each(function(i, elm) {
       href.push(prefix+cheerioObject(this).attr("href"));
-    }
   });
-  //log.info(JSON.stringify(href))
-  return href.filter(item => !item.includes("centrum-sluzeb"));
+  return href
 }
 
 let getTitle = function(cheerioObject){
@@ -21,13 +26,11 @@ let getTitle = function(cheerioObject){
   let lastItem = {
     class: 'item lastItem'
   }
-  cheerioObject('.item h2 a').each(function(i, elm) {
-      if (this.parent.parent.attribs.class !== 'item lastItem') {
+  cheerioObject('.c-list-products__title').each(function(i, elm) {
         title.push(cheerioObject(this).text());
-      }
   });
   //log.info(JSON.stringify(title))
-  return title.filter(item => !item.includes("Smlouvy,"));
+  return title;
 }
 
 let pricePerMeter = function(price, meter){
@@ -36,8 +39,8 @@ let pricePerMeter = function(price, meter){
 
 let getPrice = function(cheerioObject){
   let price = [];
-  cheerioObject('.item .price').each(function(i, elm) {
-    price.push(cheerioObject(this).text().replace(/&nbsp;/g,'').replace(/(Kč)/g,'').match(/\d{7}/g));
+  cheerioObject('.c-list-products__price').each(function(i, elm) {
+    price.push(cheerioObject(this).text().replace(/(Kč)|([.])|([ ])/g,''));
   });
   return price;
 }
@@ -45,20 +48,19 @@ let getPrice = function(cheerioObject){
 async function getStuff(data, subset) {
   try{
       log.info('Starting parsing of the page')
-      const re  = /(\d){11}|(\d){10}|(\d){9}|(\d){8}|(\d){7}|(\d){6}|(\d){5}|(\d){4}|(\d){3}/g
+      const re  = /[0-9a-f]{24}/g
       let reMetrage = /\d{3}|\d{2}/
       let reRooms = /\d+[+](kk|\d)/
       let $ = await cheerio.load(data, {
           normalizeWhitespace: true,
           xmlMode: true
       });
-
-      let id = await getHrefs($).map( href => `idnes-${href.match(re)[0]}` );      
+      let id = await getHrefs($).map(href => `idnes-${href.match(re)}` );      
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
       let rooms = await title.map(x => x.match(reRooms) ? x.match(reRooms)[0] : null)
-      let price = await getPrice($).map( x => x !== null ? x[0] : null)
+      let price = await getPrice($).map( x => x !== null ? x : null)
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
       log.info('Parsing done')

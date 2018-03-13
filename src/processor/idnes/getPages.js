@@ -4,10 +4,10 @@ const TIMEOUT = 3000
 const {Builder, By, until} = require('selenium-webdriver');
 const chromeDriver = require('selenium-webdriver/chrome.js');
 const options = new chromeDriver.Options();
-// options.addArguments(
-//     'headless',
-//     'disable-gpu'
-// );
+options.addArguments(
+    'headless',
+    'disable-gpu'
+);
 const log = require.main.require('./logger.js');
 
 
@@ -25,14 +25,14 @@ async function clickAndRead(driver){
 			try{
 				await sleep(10000)
 				items = items + await driver.executeScript("return document.documentElement.outerHTML")	
-				console.log(items)
-				let elem = await driver.findElement(By.className("paging__next"))
-				await driver.executeScript("arguments[0].scrollIntoView()", elem)
+				let elem = await driver.findElement(By.className("btn paging__next"))
+				await driver.executeScript("arguments[0].scrollIntoView(); window.scrollBy(0, -window.innerHeight / 4);", elem) // diffrent 
 				await elem.click()
 			} catch(err) { 
 				// log.info(err)
 				if (err.name == 'NoSuchElementError'){
 					log.info('Returning items')
+					console.log(items)
 					return items
 				} 
 				else {
