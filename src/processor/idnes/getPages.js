@@ -32,7 +32,7 @@ async function clickAndRead(driver){
 				// log.info(err)
 				if (err.name == 'NoSuchElementError'){
 					log.info('Returning items')
-					console.log(items)
+					// console.log(items)
 					return items
 				} 
 				else {

@@ -7,7 +7,7 @@ const regions = require('./metadata/regions');
 (async () => {
   let newest = await db.findAll('default', {
     timestamp: {
-      $gte: await utils.getPreviousDate(days = 4)
+      $gte: await utils.getPreviousDate(days = 3)
   }})
   newest.forEach(item => console.log(item))
   }

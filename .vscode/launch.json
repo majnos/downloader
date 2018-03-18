@@ -87,6 +87,12 @@
             "request": "launch",
             "name": "preprocess Debug",
             "program": "${workspaceFolder}/src/utils/preprocess.js"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Dubplicates",
+            "program": "${workspaceFolder}/src/duplicates.js"
+        },
     ]
 }

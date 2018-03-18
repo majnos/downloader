@@ -16,10 +16,10 @@ const reader = require('./utils/os.js');
         console.log('No data found')
         continue
     }
-    console.log(data)
+    // console.log(data)
     // let data = await reader.readFile('new-idnes.html')
     let details = await idnes.parsePage.getStuff(data, {provider: subset, region: item.name})
-    // await persistance.addMissing(details)  
+    await persistance.addMissing(details)  
     console.log('sleeping for 1s')
     await utils.sleep(1000)
     }
