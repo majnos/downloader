@@ -1,7 +1,8 @@
 const db = require('./db/baseControl.js');
 
 
-let result
-db.getDuplicates('default')
-console.log(result)
-
+(async () => {
+  const result = await db.getDuplicates('default')
+  console.log(result)
+  }
+)()
