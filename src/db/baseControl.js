@@ -18,11 +18,24 @@ async function insertOne(selectSet, json) {
         const client = await MongoClient.connect(URL)
         const db = await client.db(DBNAME)
         let collection = await db.collection(selectSet)
-        await collection(selectSet).insertOne(json);
+        await collection.insertOne(json);
         await client.close()
     } catch (err) {
         log.debug(err)
     }
+}
+
+async function updateOne(selectSet, json){
+  try {
+    log.debug('Updating a '+JSON.stringify(json)+' into the collection: '+selectSet+' at ' + URL)
+    const client = await MongoClient.connect(URL)
+    const db = await client.db(DBNAME)
+    let collection = await db.collection(selectSet)
+    await collection.updateOne({id: json.id}, json); // ADD tag updated to the record
+    await client.close()
+  } catch (err) {
+    log.debug(err)
+  }
 }
 
 async function findOne(selectSet, json) {
@@ -120,7 +133,7 @@ async function getDuplicates(selectSet){
   ])
   const docs = await cursor.toArray()
   console.log('dummy')
-  docs.map( doc =>
+  await docs.map( doc =>
     {
       doc.dups.shift()
       collection.deleteOne({_id : {$in: doc.dups }})
@@ -144,6 +157,7 @@ async function getDuplicates(selectSet){
 
 
 module.exports.insertOne = insertOne
+module.exports.updateOne = updateOne
 module.exports.findOne = findOne
 module.exports.findAll = findAll
 module.exports.deleteOne = deleteOne

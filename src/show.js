@@ -6,21 +6,8 @@ const utils = require('./utils/dates.js');
 (async () => {
   let newest = await db.findAll('default', {
     timestamp: {
-      $gte: await utils.getPreviousDate(days = 10)
+      $gte: await utils.getPreviousDate(days = 100)
   }})
   newest.forEach(item => console.log(item))
   }
 )()
-
-
-// (async () => {
-//   let newest = await db.findAll('default', {
-//     timestamp: {
-//       $gte: await utils.getPreviousDate(days = 3)
-//   }})
-//   newest.forEach(item => console.log(item))
-//   }
-// )()
-
-//  subset: { provider: /'Praha-Vychod-domy'/ },
-//     region: /(domy)|(byt)/,
