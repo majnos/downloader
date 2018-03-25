@@ -6,7 +6,7 @@ const utils = require('./utils/dates.js');
 (async () => {
   let newest = await db.findAll('default', {
     timestamp: {
-      $gte: await utils.getPreviousDate(days = 100)
+      $gte: await utils.getPreviousDate(days = 2)
   }})
   newest.forEach(item => console.log(item))
   }

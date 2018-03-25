@@ -14,9 +14,9 @@ async function addMissing(details) {
             log.info(JSON.stringify(item))
         }
         if (checkedItem !== null) {
-            if ( checkedItem.id === item.id && checkedItem.price !== item.price ){
+            if ( checkedItem.id === item.id && checkedItem.price !== item.price && checkedItem.price !== null){
                 base.updateOne(defaultSet, item)
-                log.info('The price has changed, inserting into database a new item')
+                log.info('The price has changed, updating a new item inside database')
                 log.info(JSON.stringify(item))
             } else {
                 log.debug('Item already in database '+item.id)

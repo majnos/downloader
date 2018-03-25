@@ -31,7 +31,12 @@ async function updateOne(selectSet, json){
     const client = await MongoClient.connect(URL)
     const db = await client.db(DBNAME)
     let collection = await db.collection(selectSet)
-    await collection.updateOne({id: json.id}, json); // ADD tag updated to the record
+    await collection.updateOne(
+      {id: json.id},
+      {$set: {"price": json.price,
+              "timestamp": json.timestamp
+             }
+      }); // ADD tag updated to the record
     await client.close()
   } catch (err) {
     log.debug(err)
@@ -93,27 +98,7 @@ async function deleteOne(selectSet, id) {
 }
 
 
-async function getDups(selectSet, callback){
-  const client = await connect(URL, DBNAME)
-  const collection = db.collection( 'default' );
-  collection.aggregate(
-    [
-      { '$group': { '_id': "$href", 'hrefCount': { '$sum': 1 } } },
-      { '$sort' : { '_id' : 1 } }
-    ], { collation : { locale : 'de@collation=phonebook' } },
-
-    function(err, docs) {
-      //assert.equal(err, null);
-      console.log("Found the following records");
-      console.log(docs)
-      callback(docs);
-    }
-  );
-}
-
-
-
-async function getDuplicates(selectSet){
+async function removeDuplicates(selectSet){
   const client = await MongoClient.connect(URL)
   const db = await client.db(DBNAME)
   let collection = await db.collection(selectSet)
@@ -142,7 +127,7 @@ async function getDuplicates(selectSet){
 }
 
 
-// async function getDuplicates(selectSet){
+// async function removeDuplicates(selectSet){
 //   const client = await MongoClient.connect(URL)
 //   const db = await client.db(DBNAME)
 //   let collection = await db.collection(selectSet)
@@ -162,6 +147,4 @@ module.exports.findOne = findOne
 module.exports.findAll = findAll
 module.exports.deleteOne = deleteOne
 module.exports.purgeSet = purgeSet
-module.exports.getDuplicates = getDuplicates
-module.exports.getDups = getDups
-
+module.exports.removeDuplicates = removeDuplicates
