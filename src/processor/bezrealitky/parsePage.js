@@ -3,20 +3,19 @@ const util = require('util');
 const cheerio = require('cheerio');
 const readFile = util.promisify(fs.readFile);
 const dates = require('./../../utils/dates.js')
-const prefix = 'https://bezrealitky.cz'
 const log = require.main.require('./logger.js');
 
 let getHrefs = function(cheerioObject){
   let href = [];
-  cheerioObject('.list .item .desc h3 a').each(function(i, elm) {
-      href.push(prefix+cheerioObject(this).attr("href"));
+  cheerioObject('.product__title a').each(function(i, elm) {
+      href.push(cheerioObject(this).attr("href"));
   });
   return href.filter(item => !item.includes("centrum-sluzeb"));
 }
 
 let getTitle = function(cheerioObject){
   let title = []
-  cheerioObject('.list .item .desc .surface').each(function(i, elm) {
+  cheerioObject('.product__link strong').each(function(i, elm) {
       title.push(cheerioObject(this).text() );
   });
   //log.info(JSON.stringify(title))
@@ -43,10 +42,10 @@ async function getStuff(data, subset) {
           normalizeWhitespace: true,
           xmlMode: true
       });
-      let reMetrage = /\d*.?\d+ / 
+      let reMetrage = /(\d){4} |(\d){3} |(\d){2} /
       let reRooms = /\d+[+](kk|\d)/
 
-      let id = await getHrefs($).map(href => `bez-${href.match(re)}` );      
+      let id = await getHrefs($).map(href => `bez-${href.match(re)}` );
       let href = await getHrefs($);
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
@@ -55,7 +54,7 @@ async function getStuff(data, subset) {
       let ppm = await pricePerMeter(price, area)
       let timestamp = await dates.getDate()
       log.info('Parsing done')
-      
+
       return title.map(function (a,b) {
               return {
               "id": id[b],
