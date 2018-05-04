@@ -28,7 +28,7 @@ let pricePerMeter = function(price, meter){
 
 let getPrice = function(cheerioObject){
   let price = [];
-  cheerioObject('.list .item .desc .price').each(function(i, elm) {
+  cheerioObject('.product__value').each(function(i, elm) {
       price.push(cheerioObject(this).text().replace(/(Kč)|([.])|([ ])/g,'') );
   });
   return price;
@@ -46,7 +46,7 @@ async function getStuff(data, subset) {
       let reRooms = /\d+[+](kk|\d)/
 
       let id = await getHrefs($).map(href => `bez-${href.match(re)}` );
-      let href = await getHrefs($);
+      let href = await getHrefs($);2
       let title = await getTitle($);
       let area = await title.map(x => x.match(reMetrage) ? x.match(reMetrage)[0].replace(/ /g, "") : null)
       let rooms = await title.map(x => x.match(reRooms) ? x.match(reRooms)[0] : null)
